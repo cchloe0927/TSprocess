@@ -1,7 +1,10 @@
-function add(n1, n2) {
-    return n1 + n2;
+var person = {
+    name: "Maximilian",
+    age: 30,
+    hobbies: ["Sports", "Cooking"]
+};
+console.log(person.name);
+for (var _i = 0, _a = person.hobbies; _i < _a.length; _i++) {
+    var hobby = _a[_i];
+    console.log(hobby);
 }
-var number1 = 5;
-var number2 = 2.8;
-var result = add(number1, number2);
-console.log(result);
