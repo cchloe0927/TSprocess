@@ -1,102 +1,45 @@
-class Department {
-  // private id: string;
-  // public name: string;
-  protected employees: string[] = []; //private : 생성된 객체 내부에서만 접근할 수 있는 속성
+//인터페이스 : 객체의 구조를 정의할 수 있게 한다.
+//아래와 같은 구조를 가져야 하는 객체에 대한 타입을 확인하는 타입으로 사용할 수 있다.
+//클래스와 상속을 사용하는 경우 하나의 클래스로부터만 상속할 수 있고 다수의 클래스로부터는 상속할 수 없다.
+//인터페이스의 경우 여러 인터페이스로부터 상속받을 수 있다는 차이가 있다.
 
-  constructor(private readonly id: string, public name: string) {
-    // this.id = id;
-    // this.name = n;
+//함수타입으로서의 인터페이스
+// type AddFn = (a: number, b: number) => number;
+interface AddFn {
+  (a: number, b: number): number;
+}
+
+let add: AddFn;
+
+add = (n1: number, n2: number) => {
+  return n1 + n2;
+};
+
+interface Named {
+  readonly name: string;
+}
+
+interface Greetable extends Named {
+  greet(phrase: string): void;
+}
+
+class Person implements Greetable {
+  name: string;
+  age = 30;
+
+  constructor(n: string) {
+    this.name = n;
   }
 
-  //describe() 함수를 통해 여러 개의 테스트 함수를 묶는 것이 가능하다.
-  describe(this: Department) {
-    console.log(`Department (${this.id}): ${this.name}`);
-  }
-
-  addEmployee(employees: string) {
-    //validation etc
-    // this.id = "d2";
-    this.employees.push(employees);
-  }
-
-  printEmployeeInfomation() {
-    console.log(this.employees.length);
-    console.log(this.employees);
+  greet(phrase: string) {
+    console.log(phrase + " " + this.name);
   }
 }
 
-class ITDepartment extends Department {
-  admins: string[];
-  constructor(id: string, admins: string[]) {
-    super(id, "IT");
-    this.admins = admins;
-  }
-}
+let user1: Greetable;
 
-class AccountingDepartment extends Department {
-  private lastReport: string;
+user1 = new Person("Max");
+// user1.name = 'Manu'
 
-  get mostRecentReport() {
-    if (this.lastReport) {
-      return this.lastReport;
-    }
-    throw new Error("No report found.");
-  }
-
-  set mostRecentReport(value: string) {
-    if (!value) {
-      throw new Error("Please pass in a valid value!");
-    }
-    this.addReport(value);
-  }
-
-  constructor(id: string, private reports: string[]) {
-    super(id, "Acocunting");
-    this.lastReport = reports[0];
-  }
-
-  addEmployee(name: string) {
-    if (name === "Max") {
-      return;
-    }
-    this.employees.push(name);
-  }
-
-  addReport(text: string) {
-    this.reports.push(text);
-    this.lastReport = text;
-  }
-
-  printReports() {
-    console.log(this.reports);
-  }
-}
-
-const it = new ITDepartment("d1", ["Max"]);
-
-it.addEmployee("Max");
-it.addEmployee("Manu");
-
-// it.employees[2] = "Anna";
-
-it.describe();
-it.name = "NEW NAME";
-it.printEmployeeInfomation();
-
-console.log(it);
-
-const accounting = new AccountingDepartment("d2", []);
-
-accounting.mostRecentReport = "";
-accounting.addReport("Something went wrong...");
-console.log(accounting.mostRecentReport);
-
-accounting.addEmployee("Max");
-accounting.addEmployee("Manu");
-
-accounting.printReports();
-accounting.printEmployeeInfomation();
-
-// const itCopy = { name: "DUMMY", describe: it.describe };
-
-// itCopy.describe();
+user1.greet("Hi there - I am");
+console.log(user1);
